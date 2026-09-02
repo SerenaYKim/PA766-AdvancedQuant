@@ -37,7 +37,7 @@ library(margins)
 
 ## 2. Import and organize the data
 
-Download `GSS2021.dta` from the [course data folder](https://drive.google.com/drive/folders/1HV7QRjEsw8_nd8VnrRwSYaHbRSMahsAQ) and save it in the same folder as this tutorial.
+Download `GSS2021.dta` from the [course data folder](https://drive.google.com/drive/folders/1dNo0FPMM7_fCJCShJnb9cQgtIIteXTeF?usp=drive_link) and save it in the same folder as this tutorial.
 
 ```r
 data_path <- "GSS2021.dta"
