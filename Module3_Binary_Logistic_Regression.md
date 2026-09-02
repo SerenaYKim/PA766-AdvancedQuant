@@ -69,7 +69,7 @@ We want to model whether a respondent supports allowing abortion if a woman want
 - `1`: Yes
 - `2`: No
 
-<p align="center"><img src="https://raw.githubusercontent.com/SerenaYKim/pa765-2024s/master/img/02/00.png" width="280" alt="Original coding of the abany variable"></p>
+<p align="center"><img src="https://github.com/SerenaYKim/pa765-2024s/blob/master/img/02/00.png" width="280" alt="Original coding of the abany variable"></p>
 
 Logistic regression expects the outcome to be coded 0 and 1. We will preserve the original variable and create a new variable named `pro_choice`:
 
