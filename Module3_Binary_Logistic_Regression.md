@@ -1,23 +1,8 @@
----
-title: "Module 3: Binary Logistic Regression"
-subtitle: "PA 766 — Advanced Quantitative Research"
-output:
-  html_document:
-    toc: true
-    toc_float: true
-    number_sections: true
-    code_folding: show
----
+# Module 3: Binary Logistic Regression
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(
-  echo = TRUE,
-  message = FALSE,
-  warning = FALSE
-)
-```
+**PA 766 — Advanced Quantitative Research**
 
-# Overview
+## Overview
 
 This tutorial introduces binary logistic regression using the 2021 General Social Survey (GSS). We begin with one predictor, calculate predicted probabilities, add a second predictor, and conclude with average marginal effects.
 
@@ -29,36 +14,36 @@ By the end of the tutorial, you should be able to:
 - calculate predicted probabilities; and
 - summarize a model with odds ratios and average marginal effects.
 
-# 1. Set up R
+## 1. Set up R
 
-## Install packages once
+### Install packages once
 
 Run this chunk only if the packages are not already installed.
 
-```{r install-packages, eval=FALSE}
+```r
 install.packages(c("rio", "dplyr", "ggplot2", "margins"))
 ```
 
-## Load packages
+### Load packages
 
 Run this chunk each time you start a new R session.
 
-```{r load-packages}
+```r
 library(rio)
 library(dplyr)
 library(ggplot2)
 library(margins)
 ```
 
-# 2. Import and organize the data
+## 2. Import and organize the data
 
 Download `GSS2021.dta` from the [course data folder](https://drive.google.com/drive/folders/1HV7QRjEsw8_nd8VnrRwSYaHbRSMahsAQ) and save it in the same folder as this tutorial.
 
-```{r import-data}
+```r
 data_path <- "GSS2021.dta"
 
 if (!file.exists(data_path)) {
-  stop("GSS2021.dta was not found. Save it in the same folder as this Rmd file.")
+  stop("GSS2021.dta was not found. Save it in the same folder as this Markdown file.")
 }
 
 GSS2021 <- import(data_path)
@@ -66,32 +51,32 @@ GSS2021 <- import(data_path)
 
 Reorder the columns alphabetically so variables are easier to locate.
 
-```{r organize-columns}
+```r
 GSS2021 <- GSS2021 %>%
   select(sort(names(.)))
 ```
 
 Inspect the variables used in this tutorial.
 
-```{r inspect-variables}
+```r
 summary(GSS2021[c("abany", "age", "polviews")])
 ```
 
-# 3. Create the binary outcome
+## 3. Create the binary outcome
 
 We want to model whether a respondent supports allowing abortion if a woman wants one for any reason. The original variable, `abany`, is coded:
 
 - `1`: Yes
 - `2`: No
 
-![Original coding of the `abany` variable](https://raw.githubusercontent.com/SerenaYKim/pa765-2024s/master/img/02/00.png){width=280px}
+<p align="center"><img src="https://raw.githubusercontent.com/SerenaYKim/pa765-2024s/master/img/02/00.png" width="280" alt="Original coding of the abany variable"></p>
 
 Logistic regression expects the outcome to be coded 0 and 1. We will preserve the original variable and create a new variable named `pro_choice`:
 
 - `1`: Supports allowing abortion for any reason
 - `0`: Does not support allowing abortion for any reason
 
-```{r recode-outcome}
+```r
 GSS2021 <- GSS2021 %>%
   mutate(
     pro_choice = case_when(
@@ -104,21 +89,21 @@ GSS2021 <- GSS2021 %>%
 
 Check the recoding before fitting a model.
 
-```{r check-outcome}
+```r
 table(GSS2021$pro_choice, useNA = "ifany")
 prop.table(table(GSS2021$pro_choice, useNA = "no"))
 ```
 
-# 4. Visualize the outcome and age
+## 4. Visualize the outcome and age
 
 Because `pro_choice` can equal only 0 or 1, many observations would overlap in a standard scatterplot. `geom_jitter()` adds a small amount of random movement so the distribution of observations is visible.
 
-```{r prepare-one-predictor-data}
+```r
 analysis_one <- GSS2021 %>%
   filter(!is.na(age), !is.na(pro_choice))
 ```
 
-```{r jitter-plot, fig.width=7, fig.height=4.5}
+```r
 ggplot(analysis_one, aes(x = age, y = pro_choice)) +
   geom_jitter(width = 0.25, height = 0.03, alpha = 0.35) +
   scale_y_continuous(
@@ -133,11 +118,11 @@ ggplot(analysis_one, aes(x = age, y = pro_choice)) +
   theme_minimal()
 ```
 
-# 5. Fit a one-predictor logistic regression model
+## 5. Fit a one-predictor logistic regression model
 
 The model below estimates how age is associated with the probability that `pro_choice` equals 1.
 
-```{r one-predictor-model}
+```r
 logit_age <- glm(
   pro_choice ~ age,
   data = analysis_one,
@@ -147,11 +132,11 @@ logit_age <- glm(
 summary(logit_age)
 ```
 
-## Calculate predicted probabilities
+### Calculate predicted probabilities
 
 Model coefficients are expressed in log-odds, which are difficult to interpret directly. Predicted probabilities are often more intuitive.
 
-```{r age-predictions}
+```r
 age_points <- data.frame(age = c(20, 40, 60))
 
 age_points <- age_points %>%
@@ -168,7 +153,7 @@ age_points
 
 Add the fitted probability curve to the observed data.
 
-```{r probability-curve, fig.width=7, fig.height=4.5}
+```r
 ggplot(analysis_one, aes(x = age, y = pro_choice)) +
   geom_jitter(width = 0.25, height = 0.03, alpha = 0.2) +
   geom_smooth(
@@ -188,11 +173,11 @@ ggplot(analysis_one, aes(x = age, y = pro_choice)) +
   theme_minimal()
 ```
 
-# 6. Create a second predictor
+## 6. Create a second predictor
 
 The GSS variable `polviews` measures political ideology from 1 (extremely liberal) to 7 (extremely conservative).
 
-![Original coding of the `polviews` variable](https://github.com/user-attachments/assets/80cc15e8-6d21-473a-b328-fff3eb57f5f6){width=453px}
+<p align="center"><img src="https://github.com/user-attachments/assets/80cc15e8-6d21-473a-b328-fff3eb57f5f6" width="453" alt="Original coding of the polviews variable"></p>
 
 Because `polviews` measures ideology rather than party identification, we will call the new variable `liberal` rather than `dems`:
 
@@ -200,7 +185,7 @@ Because `polviews` measures ideology rather than party identification, we will c
 - `0`: `polviews` is 4, 5, 6, or 7
 - `NA`: `polviews` is missing or outside the valid range
 
-```{r create-liberal-variable}
+```r
 GSS2021 <- GSS2021 %>%
   mutate(
     liberal = case_when(
@@ -213,18 +198,18 @@ GSS2021 <- GSS2021 %>%
 
 Check both the number and proportion of observations in each category.
 
-```{r check-liberal-variable}
+```r
 table(GSS2021$liberal, useNA = "ifany")
 prop.table(table(GSS2021$liberal, useNA = "no"))
 ```
 
 > **Interpretation note:** This simplified indicator combines moderate and conservative respondents in the `0` category. It should not be interpreted as a direct measure of Democratic Party identification.
 
-# 7. Fit a multiple-predictor logistic regression model
+## 7. Fit a multiple-predictor logistic regression model
 
 Create one analysis dataset containing complete observations for the outcome and both predictors.
 
-```{r prepare-multiple-predictor-data}
+```r
 analysis_two <- GSS2021 %>%
   filter(
     !is.na(pro_choice),
@@ -235,7 +220,7 @@ analysis_two <- GSS2021 %>%
 
 Estimate the relationship between abortion attitudes and age while accounting for political ideology.
 
-```{r multiple-predictor-model}
+```r
 logit_model <- glm(
   pro_choice ~ age + liberal,
   data = analysis_two,
@@ -245,19 +230,19 @@ logit_model <- glm(
 summary(logit_model)
 ```
 
-## Convert coefficients to odds ratios
+### Convert coefficients to odds ratios
 
 Exponentiating a logistic regression coefficient converts it from log-odds to an odds ratio.
 
-```{r odds-ratios}
+```r
 round(exp(coef(logit_model)), 3)
 ```
 
-## Compare predicted probabilities
+### Compare predicted probabilities
 
 The following grid compares predicted probabilities at selected ages for respondents in the two ideology categories.
 
-```{r multiple-predictor-predictions}
+```r
 prediction_grid <- expand.grid(
   age = c(20, 40, 60),
   liberal = c(0, 1)
@@ -277,22 +262,22 @@ prediction_grid <- prediction_grid %>%
 prediction_grid
 ```
 
-# 8. Estimate average marginal effects
+## 8. Estimate average marginal effects
 
 Average marginal effects summarize the average change in the predicted probability associated with a one-unit change in a predictor, holding the other variables at their observed values.
 
-```{r marginal-effects}
+```r
 margins_model <- margins(logit_model, type = "response")
 summary(margins_model)
 ```
 
 Plot the average marginal effects and their confidence intervals.
 
-```{r marginal-effects-plot, fig.width=7, fig.height=4.5}
+```r
 plot(margins_model)
 ```
 
-# 9. What to report
+## 9. What to report
 
 When presenting a binary logistic regression model, report:
 
@@ -302,6 +287,6 @@ When presenting a binary logistic regression model, report:
 4. predicted probabilities or marginal effects for substantive interpretation; and
 5. the assumptions, limitations, and scope of the conclusions.
 
-```{r analysis-sample-size}
+```r
 nobs(logit_model)
 ```
