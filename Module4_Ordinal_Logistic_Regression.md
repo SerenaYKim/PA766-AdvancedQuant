@@ -251,9 +251,8 @@ When presenting an ordinal logistic regression model, report:
 1. the order and coding of the outcome categories;
 2. the model specification and number of complete observations;
 3. coefficient estimates or proportional odds ratios with uncertainty;
-4. predicted probabilities or marginal effects for substantive interpretation;
-5. a model-fit measure, when useful; and
-6. the proportional-odds assumption, limitations, and scope of the conclusions.
+4. predicted probabilities or marginal effects for substantive interpretation; and 
+5. a model-fit measure, when useful; 
 
 ```r
 nobs(ordinal_model)

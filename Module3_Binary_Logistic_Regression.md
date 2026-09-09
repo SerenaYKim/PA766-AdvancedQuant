@@ -264,6 +264,8 @@ prediction_grid
 
 ## 8. Estimate average marginal effects
 
+<p align="center"><img src="https://github.com/SerenaYKim/pa765-2024s/blob/master/img/05/02.png" width="720" alt="Illustration of marginal effects"></p>
+
 Average marginal effects summarize the average change in the predicted probability associated with a one-unit change in a predictor, holding the other variables at their observed values.
 
 ```r
