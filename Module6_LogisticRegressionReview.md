@@ -1,4 +1,4 @@
-# Module 5, Part 1: Binary and Ordinal Logistic Regression Review
+# Module 6, Binary and Ordinal Logistic Regression Review (Optional)
 
 **PA 766 — Advanced Quantitative Research**
 
