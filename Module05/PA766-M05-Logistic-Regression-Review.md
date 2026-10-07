@@ -1,4 +1,4 @@
-# Module 6, Binary and Ordinal Logistic Regression Review (Optional)
+# Module 5, Binary and Ordinal Logistic Regression Review (Optional)
 
 **PA 766 — Advanced Quantitative Research**
 
@@ -471,5 +471,3 @@ average_probability_differences
 | Marginal effects | Effect on probability of favoring | Separate effect for each category |
 
 Report each model's outcome coding, sample size, predictors, focal odds ratio with uncertainty, and probability-based interpretation. For the ordinal model, also report the proportional-odds assessment. Both analyses are unweighted and use complete cases; the index can use partially answered items.
-
-**Discussion:** How is supernatural-evil belief associated with each policy attitude? Explain why an odds ratio and a probability change describe different quantities. These cross-sectional associations do not establish causation. Because the outcomes and samples differ, do not use their pseudo R-squared values to decide which model is better.
