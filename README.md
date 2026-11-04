@@ -10,3 +10,5 @@ Course notebooks and tutorials for Fall 2026. Each module has its own folder and
 - [Module 06](./Module06/): PDF-to-Text and Logistic Regression Review
 - [Module 07](./Module07/): Introduction to NLP
 - [Module 08](./Module08/): NLP Applications — Zero-Shot and Topic Modeling
+- [Module 09](./Module09/): Synthetic Controls
+- [Module 10](./Module10/): Machine Learning for Regression
