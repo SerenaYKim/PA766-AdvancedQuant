@@ -12,3 +12,4 @@ Course notebooks and tutorials for Fall 2026. Each module has its own folder and
 - [Module 08](./Module08/): NLP Applications — Zero-Shot and Topic Modeling
 - [Module 09](./Module09/): Synthetic Controls
 - [Module 10](./Module10/): Machine Learning for Regression
+- [Module 13](./Module13/): Regression Models for Count Data
